@@ -1,8 +1,9 @@
 #!/usr/bin/python3.4
 # -*- coding: utf-8 -*-
 
+
 from flask import Flask, request, render_template
-from py.tbtmGoods.tbtmGoods import *
+from tbtmGoods import *
 
 
 def getfilename(filename):
@@ -33,32 +34,73 @@ def readJson(jsonPath):
 
 
 try:
-    jsonPath = "json/" + time.strftime('%Y%m%d', time.localtime(time.time()))
+    nowtime = time.strftime('%Y%m%d', time.localtime(time.time()))
+    jsonPath = "json/" + nowtime
     dictList = readJson(jsonPath)
 except:
     dictList = [
-        {"店名": "", "标题": "", "原价": "", "折扣价": "", "地址": "", "评论": "", "销量": "", "卖点": "", "优惠": "", "图像URL": ""}]
+        {
+            "店名": "",
+            "标题": "",
+            "原价": "",
+            "折扣价": "",
+            "地址": "",
+            "评论": "",
+            "销量": "",
+            "卖点": "",
+            "优惠": "",
+            "图像URL": ""
+        }
+    ]
 
 app = Flask(__name__)
 
 
 @app.route("/", methods=["GET", "POST"])
 def home():
+    inter = 10
     if request.method == 'GET':
-        return render_template("index.html", dictList=dictList, days=getfilesname("json/"))
+        pages = [x + 1 for x in
+                 range((len(dictList) // inter) + 1 if len(dictList) % inter != 0 else len(dictList) // inter)]
+        if len(dictList[:inter]):
+            pages = []
+        return render_template("index.html", dictList=dictList[:inter], pages=pages, nowlist=nowtime,
+                               days=getfilesname("json/"))
     elif request.method == 'POST':
         search = request.form["search"]
         page = request.form["page"]
         if search and page:
             getJsonData(int(page), search)
-            jsonPath = "json/" + time.strftime('%Y%m%d', time.localtime(time.time()))
+            nowtm = time.strftime('%Y%m%d', time.localtime(time.time()))
+            jsonPath = "json/" + nowtime
             newList = readJson(jsonPath)
-            return render_template("index.html", dictList=newList, days=getfilesname("json/"))
-        elif request.method == 'POST' and request.form["selectday"]:
+            pages = [x + 1 for x in
+                     range((len(newList) // inter) + 1 if len(newList) % inter != 0 else len(newList) // inter)]
+            return render_template("index.html", dictList=newList[:inter], pages=pages, nowlist=nowtm,
+                                   days=getfilesname("json/"))
+        elif request.method == 'POST' and (request.form["selectday"] or request.form["nowlist"]):
             selectday = request.form["selectday"]
+            if selectday == "":
+                selectday = request.form["nowlist"]
             path = "json/" + selectday
             selectlist = readJson(path)
-            return render_template("index.html", dictList=selectlist, days=getfilesname("json/"))
+            pages = [x + 1 for x in range(
+                (len(selectlist) // inter) + 1 if len(selectlist) % inter != 0 else len(selectlist) // inter)]
+            if request.form["pg"]:
+                pg = int(request.form["pg"])
+                if pg == 1:
+                    down = 0
+                else:
+                    down = (pg - 1) * 10 + 1
+                up = down + inter
+                nowlist = request.form["nowlist"]
+                path = "json/" + nowlist
+                selectlist = readJson(path)
+                return render_template("index.html", dictList=selectlist[down:up], pages=pages, nowlist=nowlist,
+                                       days=getfilesname("json/"))
+            else:
+                return render_template("index.html", dictList=selectlist[:inter], pages=pages, nowlist=selectday,
+                                       days=getfilesname("json/"))
         else:
             return render_template("index.html", dictList=dictList, days=getfilesname("json/"))
 

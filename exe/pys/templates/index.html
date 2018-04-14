@@ -5,17 +5,33 @@
 </head>
 <body>
 <div class="container" style="width: 88%;">
-	<form action="/" method="post">
-		{%for day in days%}
-			<input type="hidden" name="selectday" value="{{day}}"><button type="submit">{{day}}</button>
-		{%endfor%}
-
-		<div class="input-group" style="width: 16.6667%;">
-		   <input type="text" class="form-control" name="search" placeholder="请输入字段名">
-		   <input type="text" class="form-control" name="page" placeholder="请输入查询页数">
-		   <button type="submit" class="btn btn-info btn-search">查找</button>
-		</div>
+	{%for day in days%}
+	<form action="/" method="post" style="float: left;padding: 5px">
+		<input type="hidden" name="search">
+		<input type="hidden" name="page">
+		<input type="hidden" name="pg">
+		<input type="hidden" name="nowlist" value={{nowlist}}>
+		<input type="hidden" name="selectday" value="{{day}}"><button type="submit">{{day}}</button>
 	</form>
+	{%endfor%}
+	<div style="clear:both;">
+		<form action="/" method="post">
+			<div class="input-group" style="width: 16.6667%;">
+			   <input type="text" class="form-control" name="search" placeholder="请输入字段名">
+			   <input type="text" class="form-control" name="page" placeholder="请输入查询页数">
+			   <button type="submit" class="btn btn-info btn-search">查找</button>
+			</div>
+		</form>
+	</div>
+	{%for pg in pages%}
+	<form action="/" method="post" style="float: left;padding: 5px">
+		<input type="hidden" name="search">
+		<input type="hidden" name="page">
+		<input type="hidden" name="selectday">
+		<input type="hidden" name="nowlist" value={{nowlist}}>
+		<input type="hidden" name="pg" value="{{pg}}"><button type="submit">{{pg}}</button>
+	</form>
+	{%endfor%}
 
 	<table class="table table-striped">
 		<thead>
