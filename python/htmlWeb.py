@@ -18,6 +18,8 @@ def getfilesname(filename):
         array = dirs
         if array:
             return array
+        else:
+            return []
 
 
 def readJson(jsonPath):
@@ -40,15 +42,10 @@ try:
 except:
     dictList = [
         {
-            "店名": "",
             "标题": "",
             "原价": "",
             "折扣价": "",
-            "地址": "",
-            "评论": "",
             "销量": "",
-            "卖点": "",
-            "优惠": "",
             "图像URL": ""
         }
     ]
@@ -106,4 +103,4 @@ def home():
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host='127.0.0.1', port=5000, debug=True)
