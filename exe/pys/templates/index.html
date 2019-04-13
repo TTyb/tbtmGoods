@@ -36,31 +36,22 @@
 	<table class="table table-striped">
 		<thead>
 		<tr>
-			<th>店名</th>
 			<th>标题</th>
 			<th>原价</th>
 			<th>折扣价</th>
-			<th>地址</th>
-			<th>评论</th>
 			<th>销量</th>
 			<th>卖点</th>
-			<th>优惠</th>
 			<th>图像</th>
 		</tr>
 		</thead>
 		<tbody>
 		{%for dict in dictList%}
 		<tr>
-			<th>{{ dict['店名'] }}</th>
 			<th><a href="{{ dict['详情页'] }}">{{ dict['商品标题'] }}</a></th>
 			<th>{{ dict['原价'] }}</th>
-			<th>{{ dict['商品打折价'] }}</th>
-			<th>{{ dict['发货地址'] }}&nbsp</th>
-			<th>{{ dict['评论数'] }}</th>
+			<th>{{ dict['折扣价'] }}</th>
 			<th>{{ dict['售出件数'] }}</th>
-			<th>{{ dict['折扣政策'] }}</th>
-			<th>{{ dict['金币折扣'] }}&nbsp&nbsp&nbsp&nbsp</th>
-			<th><a href="{{ dict['图像URL'] }}" target="_blank"><img src="{{ dict['图像URL'].replace('720x720','60x60') }}" alt=""/></a></th>
+			<th><a href="{{ dict['图像URL'] }}" target="_blank"><img src="{{ dict['图像URL'].replace('720x720','60x60') }}" alt="" height="60" width="60"/></a></th>
 		</tr>
 		{%endfor%}
 		</tbody>
