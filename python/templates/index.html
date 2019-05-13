@@ -4,7 +4,13 @@
 	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/bootstrap.min.css')}}" />
 </head>
 <body>
+
 <div class="container" style="width: 88%;">
+	<p style="font-family:KaiTi;line-height: 20px;font-size: 13.6px;margin-bottom:0px;color:#FF0000">如有任何问题<br>让作者帮你解决！</p>
+	<div style="margin-bottom: 10px;">
+		<img class="img-responsive" style="height:15%" src="https://www.tybai.com/static/jpg/follow.jpg" alt=""/>
+	</div>
+	
 	{%for day in days%}
 	<form action="/" method="post" style="float: left;padding: 5px">
 		<input type="hidden" name="search">

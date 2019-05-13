@@ -1,2 +1,2 @@
-cd pys
+cd pys/dist
 htmlWeb.exe
