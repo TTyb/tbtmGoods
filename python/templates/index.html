@@ -43,12 +43,15 @@
 		<thead>
 		<tr>
 			<th>店铺</th>
+			<th>地址</th>
 			<th>标题</th>
 			<th>原价</th>
 			<th>折扣价</th>
 			<th>销量</th>
 			<th>库存</th>
 			<th>收藏</th>
+			<th>得分</th>
+			<th>基本信息</th>
 			<th>图像</th>
 		</tr>
 		</thead>
@@ -56,12 +59,15 @@
 		{%for dict in dictList%}
 		<tr>
 			<th><a href="{{ dict['店铺链接'] }}">{{ dict['店铺'] }}</a></th>
+			<th>{{ dict['地址'] }}</th>
 			<th><a href="{{ dict['详情页'] }}">{{ dict['商品标题'] }}</a></th>
 			<th>{{ dict['原价'] }}</th>
 			<th>{{ dict['折扣价'] }}</th>
 			<th>{{ dict['售出件数'] }}</th>
 			<th>{{ dict['库存'] }}</th>
 			<th>{{ dict['收藏'] }}</th>
+			<th>{{ dict['得分'] }}</th>
+			<th>{{ dict['基本信息'] }}</th>
 			<th><a href="{{ dict['图像URL'] }}" target="_blank"><img src="{{ dict['图像URL'].replace('720x720','60x60') }}" alt="" height="60" width="60"/></a></th>
 		</tr>
 		{%endfor%}

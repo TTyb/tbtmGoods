@@ -50,19 +50,30 @@ def getDetail(datas):
             html = r.text
             start = html.find('(')
             datas = (json.loads(html[start + 1:-1]))['data']
+            # 店铺各种信息：名称：shopName、链接：taoShopUrl
+            item = dict(item, **datas['seller'])
             # 库存
             quantity = json.loads(datas['apiStack'][0]['value'])['skuCore']['sku2info']['0']['quantity']
             item["quantity"]=quantity
             # 收藏
             favcount=datas['item']['favcount']
             item['favcount']=favcount
-            # 店铺各种信息：名称：shopName、链接：taoShopUrl
-            mergeItem = dict(item, **datas['seller'])
-            detailInfo.append(mergeItem)
+            # 基本信息
+            item['groupProps'] = datas['props']['groupProps'][0]['基本信息']
+            # 店铺所在地
+            address=json.loads(datas['apiStack'][0]['value'])['delivery']['from']
+            item['address'] = address
+            # 店铺得分
+            score=0
+            for sco in datas['seller']["evaluates"]:
+                score += float(sco["score"])
+            item['score'] = round(score/3,1)
+            detailInfo.append(item)
         except Exception as e:
-            temp={'seller':{'shopName':'','taoShopUrl':'','quantity':'','favcount':''}}
-            mergeItem = dict(item, **temp['seller'])
-            detailInfo.append(mergeItem)
+            print(e)
+            temp={'shopName':'','taoShopUrl':'','quantity':'','favcount':'','groupProps':'','address':'','score':''}
+            item = dict(item, **temp)
+            detailInfo.append(item)
         time.sleep(1)
     return detailInfo
 
@@ -73,6 +84,7 @@ def formatDict(page, infoList):
         formatInfo = {}
         formatInfo["页数"] = page
         Trys("店铺", "shopName", formatInfo, listItem)
+        Trys("地址", "address", formatInfo, listItem)
         Trys("店铺链接", "taoShopUrl", formatInfo, listItem)
         Trys("商品标题", "TITLE", formatInfo, listItem)
         Trys("原价", "GOODSPRICE", formatInfo, listItem)
@@ -80,6 +92,8 @@ def formatDict(page, infoList):
         Trys("售出件数", "SELL", formatInfo, listItem)
         Trys("库存", "quantity", formatInfo, listItem)
         Trys("收藏", "favcount", formatInfo, listItem)
+        Trys("得分", "score", formatInfo, listItem)
+        Trys("基本信息", "groupProps", formatInfo, listItem)
         Trys("详情页", "EURL", formatInfo, listItem)
         Trys("图像URL", "TBGOODSLINK", formatInfo, listItem)
         dictList.append(formatInfo)
@@ -116,6 +130,6 @@ def getJsonData(page, keyword):
         time.sleep(5)
 
 if __name__ == "__main__":
-    page = 2
-    keyword = "iphone x".replace(" ", "+")
+    page = 1
+    keyword = "短袖".replace(" ", "+")
     getJsonData(page, keyword)
