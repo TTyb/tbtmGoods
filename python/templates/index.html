@@ -39,7 +39,7 @@
 	</form>
 	{%endfor%}
 
-	<table class="table table-striped">
+	<table class="table table-striped" style="table-layout: fixed;">
 		<thead>
 		<tr>
 			<th>店铺</th>
@@ -67,7 +67,7 @@
 			<th>{{ dict['库存'] }}</th>
 			<th>{{ dict['收藏'] }}</th>
 			<th>{{ dict['得分'] }}</th>
-			<th>{{ dict['基本信息'] }}</th>
+			<th><div title="{{ dict['基本信息'] }}" style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;">{{ dict['基本信息'] }}</div></th>
 			<th><a href="{{ dict['图像URL'] }}" target="_blank"><img src="{{ dict['图像URL'].replace('720x720','60x60') }}" alt="" height="60" width="60"/></a></th>
 		</tr>
 		{%endfor%}
